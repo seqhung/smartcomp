@@ -53,11 +53,15 @@ function queryCreateContact(tx) {
 function createContact(callback_sync_add_contact) {
 
 	var lname = document.getElementById('last_name').value;
+	var email = document.getElementById('email').value;
 	if (lname.length == 0) {
 		alert('Please input Last name');
 		return;
 	}
-
+	if (email.length == 0) {
+		alert('Please input Email');
+		return;
+	}
 	if (!db) {
 		db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
 	}
@@ -65,9 +69,9 @@ function createContact(callback_sync_add_contact) {
 		console.log("Database has been created successfully");
 
 		if (isWifiConnection()) {
-			var fname, email, addr, homePhone, mobiphone, is_cmp, owner_id;
+			var fname, addr, homePhone, mobiphone, is_cmp, owner_id;
 			fname = document.getElementById('first_name').value;
-			email = document.getElementById('email').value;
+
 			addr = document.getElementById('address').value;
 			homePhone = document.getElementById('homephone').value;
 			mobiphone = document.getElementById('mobile').value;
@@ -109,6 +113,10 @@ function updateContact(id, callback_sync) {
 
 	if (lname.length == 0) {
 		alert('Please input Last name');
+		return;
+	}
+	if (email.length == 0) {
+		alert('Please input Email');
 		return;
 	}
 	//alert(id);
@@ -192,14 +200,24 @@ function querySuccess(tx, results) {
 
 function queryContactList(tx) {
 	//var search_text = document.getElementById('search-text').value;
+	var sql = 'SELECT * FROM Contact c where c.is_cmp = ?';
 	var is_cmp = document.getElementById('is_cmp').value;
 	var cont_type = 0;
 	if (is_cmp == "1") {
 		cont_type = 1;
+		tx.executeSql(sql, [cont_type], querySuccess, errorCB);
+	} else {
+
+		var user_id = readLocalStorage(USER_ID_SESSIION);
+		alert(user_id);
+		sql = 'SELECT * FROM Contact c where  c.owner_id =? and c.is_cmp = 0';
+		// and
+
+		tx.executeSql(sql, [ user_id ], querySuccess, errorCB);
 	}
 
 	//alert(is_cmp);
-	tx.executeSql('SELECT * FROM Contact c where c.is_cmp = ?', [cont_type], querySuccess, errorCB);
+
 	//tx.executeSql('SELECT * FROM Contact c', [], querySuccess, errorCB);
 	/*if (search_text.length > 0) {
 
@@ -217,8 +235,8 @@ function queryContactList(tx) {
 
 function getContactList() {
 	db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
-	db.transaction(queryContactList,querySuccess, errorCB);
-		
+	db.transaction(queryContactList, querySuccess, errorCB);
+
 }
 
 function clearContactGui() {

@@ -39,7 +39,9 @@
 				createDatabase();
 				if (isWifiConnection()) {
 					sync_user(parse_user_list);
-					//sync_data(parse_contact_list, parse_quotation_list);
+					//sync_db_quotation(parse_quotation_list);
+					//sysn_contact(parse_contact_list);
+				
 				} else {
 					alert("Network not available");
 				}
@@ -56,8 +58,8 @@
 				//login(username, password);
 				//window.location.replace('contact_list.html');
 
-				//check_user_login(login_result, username, password);
-				check_user_login(login_result, "hungho", "123456");
+				check_user_login(login_result, username, password);
+				//check_user_login(login_result, "hungho", "123456");
 
 			}
 

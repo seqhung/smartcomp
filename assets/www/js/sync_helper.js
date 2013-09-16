@@ -60,9 +60,9 @@ function parse_quotation_list(quotationList) {
 
 	//alert(print_r(quotationList));
 	if (!db) {
-		db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
-	}
 
+	}
+	db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
 	db.transaction(function(tx) {
 		for (var i = 0; i < length; i++) {
 			var e = quotationList[i];
@@ -85,7 +85,7 @@ function parse_quotation_list(quotationList) {
 }
 
 function sync_user(callback) {
-
+	//alert('94872389534');
 	var options = {};
 	options.url = USER_URL;
 	//alert(USER_URL);
@@ -103,9 +103,8 @@ function sync_user(callback) {
 	$.ajax(options);
 }
 
-function sync_data(callback_cont, callback_quot) {
-
-	//alert('werwerwerwer324534543');
+function sysn_contact(callback_cont) {
+	//alert('98798798');
 	var options = {};
 	options.url = CONTACT_URL;
 	options.type = "GET";
@@ -120,6 +119,11 @@ function sync_data(callback_cont, callback_quot) {
 
 	};
 	$.ajax(options);
+}
+
+function sync_db_quotation(callback_quot) {
+
+	//alert('werwerwerwer324534543');
 
 	var quotations = {};
 	quotations.url = QUOTATION_URL;
@@ -130,6 +134,7 @@ function sync_data(callback_cont, callback_quot) {
 		callback_quot(quotationList);
 	};
 	quotations.error = function(err) {
+		//alert('erer 55555');
 		alert(print_r(err));
 	};
 	$.ajax(quotations);
@@ -168,6 +173,62 @@ function sync_add_contact(cont) {
 
 }
 
+function sync_add_quotation(quot) {
+
+	var sex = 0;
+	if (quot.sex == 'Male' || quot.sex == 'male') {
+		sex = 1;
+	}
+	var options = {};
+	options.url = QUOTATION_URL + 'create';
+	options.type = "POST";
+	options.data = {
+		BuyerName : quot.Buyer,
+		IdentityNumber : quot.id_num,
+		Age : quot.Age,
+		sex : sex,
+		Amount : quot.Insure_Amount,
+		AgentId : quot.owner_id
+	};
+	options.dataType = "json";
+	options.success = function(newId) {
+		//alert('Sync Create new quotation successfully. ID: ' + newdfadfasdfadsfId);
+	};
+	options.error = function(err) {
+		alert(print_r(err));
+	};
+	$.ajax(options);
+}
+
+function sync_update_quotation(quot) {
+	var sex = 0;
+	if (quot.sex == 'Male' || quot.sex == 'male') {
+		sex = 1;
+	}
+
+	var options = {};
+	options.url = QUOTATION_URL + 'edit?id=' + quot.id;
+	options.type = "PUT";
+	options.data = {
+		BuyerName : quot.Buyer,
+		IdentityNumber : quot.id_num,
+		Age : quot.Age,
+		sex : sex,
+		Amount : quot.Insure_Amount
+	};
+	options.dataType = "json";
+	options.success = function() {
+		console.log('Contact update Synch Successful.');
+		alert('Quation sysn update successful');
+	};
+	options.error = function(err) {
+		console.log('Contact update Synch Error! ' + err.message);
+
+	};
+	$.ajax(options);
+
+}
+
 //edit an agent
 function sync_update_contact(cont) {
 	//alert(print_r(cont));
@@ -197,70 +258,25 @@ function sync_update_contact(cont) {
 
 }
 
-function sync_quotation(tx) {
-	var quotations = getQuotations();
-	var l = quotations.length;
+/*function sync_quotation(tx) {
+var quotations = getQuotations();
+var l = quotations.length;
 
-	//var sql = 'INSERT INTO Quotaion(Buyer,Agency,Age,Sex,Insure_Amount) VALUES ' + '(?,?,?,?,?)';
-	var sql = "INSERT OR REPLACE INTO Quotaion " + "(id, Buyer,Agency,Age,Sex,Insure_Amount) " + "VALUES (?,?,?,?,?,?)";
-	var e;
-	for (var i = 0; i < l; i++) {
-		e = quotations[i];
-		tx.executeSql(sql, [e.id, e.Buyer, e.Agency, e.Age, e.Sex, e.Insure_Amount], function() {
-			console.log('Synch quotation success');
-		}, function(tx, error) {
-			console.log('Sync quotation error: ' + error.message);
-		});
-	}
+//var sql = 'INSERT INTO Quotaion(Buyer,Agency,Age,Sex,Insure_Amount) VALUES ' + '(?,?,?,?,?)';
+var sql = "INSERT OR REPLACE INTO Quotaion " + "(id, Buyer,Agency,Age,Sex,Insure_Amount) " + "VALUES (?,?,?,?,?,?)";
+var e;
+for (var i = 0; i < l; i++) {
+e = quotations[i];
+tx.executeSql(sql, [e.id, e.Buyer, e.Agency, e.Age, e.Sex, e.Insure_Amount], function() {
+console.log('Synch quotation success');
+}, function(tx, error) {
+console.log('Sync quotation error: ' + error.message);
+});
 }
-
-function sync_add_quotation(quot) {
-	var options = {};
-	options.url = QUOTATION_URL + 'create';
-	options.type = "POST";
-	options.data = {
-		FirstName : cont.fname,
-		LastName : cont.lname,
-		Email : cont.email,
-		Phone : cont.homePhone,
-		//id, Buyer,id_num,Age,Sex,Insure_Amount
-		//Id, e.FirstName, e.LastName, e.Email, e.Phone, e.Phone, e.Address, e.ContactType
-		Address : cont.addr,
-		ContactType : cont.is_cmp
-	};
-	options.dataType = "json";
-	options.success = function(newId) {
-		alert('Sync Create new contact successfully. ID: ' + newId);
-	};
-	options.error = function(err) {
-		alert(print_r(err));
-	};
-	$.ajax(options);
 }
+*/
 
 //edit an agent
-function sync_update_quotation(quot) {
-	var options = {};
-	options.url = SERVER_URL + 'quotations/' + quot.id;
-	options.type = "PUT";
-	options.data = {
-		id : quot.id,
-		Buyer : quot.Buyer,
-		Agency : quot.Agency,
-		Age : quot.Age,
-		Sex : quot.Sex,
-		Insure_Amount : quot.Insure_Amount
-	};
-	options.dataType = "json";
-	options.success = function() {
-		console.log('Contact update Synch Successful.');
-	};
-	options.error = function(err) {
-		console.log('Contact update Synch Error! ' + err.message);
-	};
-	$.ajax(options);
-
-}
 
 function get_server_contacts() {
 	var options = {};

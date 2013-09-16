@@ -17,9 +17,11 @@
 		<!-- <link rel="stylesheet" href="css/jquery.mobile-1.3.0.css"> -->
 		<link href="css/styles.css" rel="stylesheet" />
 		<script src="css/source-sans-pro.js"></script>
+		<script src="js/session.js"></script>
 		<script src="lib/codiqa.ext.js"></script>
 		<script type="text/javascript" src="js/contact.js" ></script>
 		<script type="text/javascript" src="js/utils.js"></script>
+		<script src="js/sync_helper.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			//
 			//document.addEventListener("deviceready", onDeviceReady, false);
@@ -28,7 +30,8 @@
 
 				//createDB();
 				if (isWifiConnection()) {
-					sync_data(parse_contact_list, parse_quotation_list);
+					//sync_data(parse_contact_list, parse_quotation_list);
+					sysn_contact(parse_contact_list);
 				}
 				getContactList();
 

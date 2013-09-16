@@ -19,6 +19,8 @@
 
 		<script src="js/quotaion.js" type="text/javascript"></script>
 		<script src="js/utils.js" type="text/javascript"></script>
+		<script src="js/sync_helper.js" type="text/javascript"></script>
+		<script src="js/session.js"></script>
 		<script type="text/javascript" charset="utf-8">
 			//document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -35,9 +37,9 @@
 			function contactSubmit_click() {
 				var id = getURLParameter('id');
 				if (id != null && id.length > 0) {
-					updateQuotaion(id);
+					updateQuotaion(id, sync_update_quotation);
 				} else {
-					createQuotaion();
+					createQuotaion(sync_add_quotation);
 				}
 			}
 

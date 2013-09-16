@@ -11,7 +11,7 @@ function successCreateCB() {
 	console.log("Database has been created successfully");
 }
 
-function updateQuotaion(id) {
+function updateQuotaion(id, callback_sync_update_quotation) {
 
 	var Buyer, Agency, Age, Sex, Insure_Amount, id_num;
 	Buyer = document.getElementById('Buyer').value;
@@ -20,17 +20,18 @@ function updateQuotaion(id) {
 		return;
 	}
 
+	id_num = document.getElementById('id_num').value;
+	Age = document.getElementById('Age').value;
+	Sex = document.getElementById('Sex').value;
+	Insure_Amount = document.getElementById('Insure_Amount').value;
+
+	var sql = 'Update Quotaion set Buyer = ?, id_num = ?, Age = ?, Sex= ?, Insure_Amount= ?';
+	sql += ' Where id = ?';
+
 	if (!db) {
 		db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
 	}
 	db.transaction(function(tx) {
-		id_num = document.getElementById('id_num').value;
-		Age = document.getElementById('Age').value;
-		Sex = document.getElementById('Sex').value;
-		Insure_Amount = document.getElementById('Insure_Amount').value;
-
-		var sql = 'Update Quotaion set Buyer = ?, id_num = ?, Age = ?, Sex= ?, Insure_Amount= ?';
-		sql += ' Where id = ?';
 
 		tx.executeSql(sql, [Buyer, id_num, Age, Sex, Insure_Amount, id]);
 
@@ -38,6 +39,19 @@ function updateQuotaion(id) {
 		console.log("Error processing SQL:" + err.message);
 	}, function() {
 		console.log("quotation have updated successful");
+
+		var quot = {
+			"id":id,
+			"id_num" : id_num,
+			"Age" : Age,
+			"Sex" : Sex,
+			"Insure_Amount" : Insure_Amount,		
+			"Buyer" : Buyer
+		};
+		if (isWifiConnection()) {
+			callback_sync_update_quotation(quot);
+		}
+
 		alert('Your quotation have updated successful.');
 	});
 }
@@ -66,8 +80,8 @@ function bindQuotaion(id) {
 	}, errorCB);
 }
 
-function createQuotaion() {
-	var Buyer, id_num, Age, Sex, Insure_Amount;
+function createQuotaion(callback_sync_add_quotation) {
+	var Buyer, id_num, Age, Sex, Insure_Amount, owner_id;
 	Buyer = document.getElementById('Buyer').value;
 	if (Buyer.length == 0) {
 		alert('Please input Buyer');
@@ -83,15 +97,30 @@ function createQuotaion() {
 		Age = document.getElementById('Age').value;
 		Sex = document.getElementById('Sex').value;
 		Insure_Amount = document.getElementById('Insure_Amount').value;
+		owner_id = readLocalStorage(USER_ID_SESSIION);
 
-		var sql = 'INSERT INTO Quotaion(Buyer,id_num,Age,Sex,Insure_Amount) VALUES ' + '(?,?,?,?,?)';
+		var sql = 'INSERT INTO Quotaion(Buyer,id_num,Age,Sex,Insure_Amount,owner_id) VALUES ' + '(?,?,?,?,?,?)';
 
 		//tx.executeSql(sql, [e.id, e.firstName, e.lastName, e.managerId, e.title, e.city, e.officePhone, e.cellPhone, e.email],
 		//alert(sql);
 
-		tx.executeSql(sql, [Buyer, id_num, Age, Sex, Insure_Amount]);
+		tx.executeSql(sql, [Buyer, id_num, Age, Sex, Insure_Amount, owner_id]);
 	}, errorCB, function() {
 		console.log("Quotation created successfully");
+
+		if (isWifiConnection()) {
+
+			var quot = {
+				"id_num" : id_num,
+				"Age" : Age,
+				"Sex" : Sex,
+				"Insure_Amount" : Insure_Amount,
+				"owner_id" : owner_id,
+				"Buyer" : Buyer
+			};
+			callback_sync_add_quotation(quot);
+		}
+
 		alert('Your quotation have created successful.');
 	});
 }
