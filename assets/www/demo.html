@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<script src="css/source-sans-pro.js"></script>
+		<title>demo</title>
+		<meta name="description" content="">
+		<meta name="author" content="Administrator">
+
+		<meta name="viewport" content="width=device-width; initial-scale=1.0">
+		<meta http-equiv="Content-type" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="/favicon.ico">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<script type="text/javascript" src="lib/cordova.js"></script>
+		<script src="https://d10ajoocuyu32n.cloudfront.net/jquery-1.9.1.min.js"></script>
+		<!-- jQuery and jQuery Mobile -->
+		<script src="https://d10ajoocuyu32n.cloudfront.net/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+
+		<script type="text/javascript" src="js/quotationDB.js"></script>
+		<link href="css/demo.css" rel="stylesheet" type="text/css">
+		<style type="text/css">
+			
+			.btn {
+				border: 1px solid #555;
+				-webkit-border-radius: 5px;
+				border-radius: 5px;
+				text-align: center;
+				display: block;
+				/* float:left; */
+				clear: both;
+				background: #eceae7;
+				width: 90%;
+				color: #e87a12;
+				font-size: 1.1em;
+				font-weight: bold;
+				text-decoration: none;
+				padding: 0.7em 0.1em;
+				margin: 5px auto;
+			}
+			
+			.btn.deux {
+				clear: none;
+				float: left;
+				width: 45%;
+				margin: 6px 3px 3px;
+			}
+			
+			.btn.trois {
+				clear: none;
+				float: left;
+				width: 30%;
+				margin: 6px 2px 3px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<h2>Storage</h2>
+		<blockquote>
+			<p>
+				Provides access to the vices storage options.
+			</p>
+		</blockquote>
+		<h4 class="help">Based on <b>W3C Web SQL Database Spec</b> and <b>W3C Web Storage API Spec</b></h4>
+		<a class="btn" onclick="createDB();">Create DB</a><br/>
+		<a class="btn" onclick="getSqlResultSet();">SQL Result Set</a>
+		<div class="result-block">
+			SQL Result:
+			<br/>
+			<span id="sql-result"></span>
+			<br/>
+		</div>
+		<br/>
+		<a class="btn" onclick="writeLocalStorage();">Write LocalStorage</a><br/>
+		<a class="btn" onclick="readLocalStorage();">Read LocalStorage</a><br/>
+		<a class="btn" onclick="removeItemLocalStorage();">Remove Item</a><br/>
+		<div class="result-block">
+			Local Storage:
+			<span id="local-storage-result"></span>
+			<br/>
+		</div>
+		<!-- /scrollable -->
+		<div id="footer" >
+			<h1>&copy; 2012 Mobile Developer Solutions</h1>
+		</div>
+		<script type="text/javascript" charset="utf-8" src="database.js"></script>
+	</body>
+</html>

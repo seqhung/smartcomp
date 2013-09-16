@@ -1,0 +1,82 @@
+<html>
+<head>
+    <title></title>
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="css/source-sans-pro.js"></script>
+</head>
+<body>
+    <!-- Home View Template -->
+    <script id="tpl-home" type="text/x-handlebars-template">
+        <div class='header'>
+            <h1>Home</h1>
+        </div>
+        <div class='search-bar'>
+            <input class='search-key' type="search" />
+        </div>
+        <div class="scroll"><ul class='contact-list'></ul></div>
+    </script>
+
+    <!-- Contact Item View Template -->
+    <script id="tpl-contact-li" type="text/x-handlebars-template">
+        {{#.}}
+        <li><a href="#contacts/{{this.id}}">
+            {{this.name.givenName}} {{this.name.middleName}} {{this.name.familyName}}<br />
+            {{this.displayName}}</a>
+        </li>
+        {{/.}}
+    </script>
+
+    <!--<script id="tpl-contact-li" type="text/x-handlebars-template">
+        {{#.}}
+        <li><a href="#contacts/{{this.id}}">{{this.firstName}} {{this.lastName}}<br />
+            {{this.title}}</a></li>
+        {{/.}}
+    </script>-->
+
+    <!-- Contact Detail View Template -->
+    <script id="tpl-contact-detail" type="text/x-handlebars-template">
+        <div class='header'><a href='#' class="button header-button header-button-left">Back</a><h1>Details</h1>
+        </div>
+        <div class='details'>
+            <img class='contact-image' src='img/{{this.name.givenName}}_{{this.name.familyName}}.jpg' />
+            <h1>Xin chào {{this.displayName}}</h1>
+            
+        </div>
+    </script>
+
+    <script src="phonegap.js"></script>
+    <script src="lib/jquery-1.8.2.min.js"></script>
+    <script src="lib/handlebars.js"></script>
+    <script src="lib/iscroll.js"></script>
+    <script src="js/storage/memory-store.js"></script>
+    <script src="js/storage/ls-store.js"></script>
+    <script src="js/storage/device-contact-store.js"></script>
+    <script src="js/view/HomeView.js"></script>
+    <script src="js/view/ContactView.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
+
+<!-- Contact Item View Template -->
+<!--<script id="Script1" type="text/x-handlebars-template">
+    {{#.}}
+    <li><a href="#contacts/{{this.id}}">{{this.firstName}} {{this.lastName}}<br />
+        {{this.title}}</a></li>
+    {{/.}}
+</script>-->
+
+
+<!--<img class='contact-image' src='img/{{firstName}}_{{lastName}}.jpg' />
+<h1>{{displayName}}</h1>
+<!--<h2>{{title}}</h2>-->
+<!--<span class="location"></span>
+<ul>
+    <li><a href="tel:{{officePhone}}">Call Office<br />
+        {{phoneNumbers[0].value}}</a></li>
+    <li><a href="tel:{{cellPhone}}">Call Cell<br />
+        {{phoneNumbers[0].value}}</a></li>
+    <li><a href="sms:{{cellPhone}}">SMS<br />
+        {{phoneNumbers[0].value}}</a></li>
+    <li><a href="#" class="add-contact-btn">Add to Contacts</a></li>
+</ul>-->

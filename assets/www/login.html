@@ -1,0 +1,148 @@
+<html>
+
+	<head>
+		<!-- <meta name="viewport" content="width=320; user-scalable=no" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Auth Demo</title>
+		<link rel="stylesheet" href="jquery.mobile/jquery.mobile-1.0rc2.css" type="text/css" charset="utf-8" />
+		<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/phonegap-1.2.0.js"></script>
+		<script src="jquery.mobile/jquery.mobile-1.0rc2.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/main.js"></script> -->
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Excellent Company</title>
+
+		<script src="https://d10ajoocuyu32n.cloudfront.net/jquery-1.9.1.min.js"></script>
+		<script src="https://d10ajoocuyu32n.cloudfront.net/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+
+		<script src="js/utils.js" type="text/javascript"></script>
+		<script src="lib/codiqa.ext.js"></script>
+		<script src="lib/cordova.js"></script>
+		<script src="css/source-sans-pro.js"></script>
+
+		<script src="js/contact.js" type="text/javascript"></script>
+		<script src="js/quotaion.js" type="text/javascript"></script>
+		<script src="js/sync_helper.js" type="text/javascript"></script>
+		<script src="js/account.js" type="text/javascript"></script>
+		<script src="js/session.js" type="text/javascript"></script>
+		<link href="css/demo.css" rel="stylesheet">
+		<link href="css/codiqa.ext.css" rel="stylesheet" />
+		<link rel="stylesheet" href="https://d10ajoocuyu32n.cloudfront.net/mobile/1.3.1/jquery.mobile-1.3.1.min.css">
+		<script type="text/javascript" charset="utf-8">
+			document.addEventListener("deviceready", onDeviceReady, false);
+			function onDeviceReady() {
+				//alert('259842938');
+				createDatabase();
+				if (isWifiConnection()) {
+					sync_user(parse_user_list);
+					//sync_data(parse_contact_list, parse_quotation_list);
+				} else {
+					alert("Network not available");
+				}
+				//get_server_contacts();
+				//var contactList = get_server_contacts();
+
+			}
+
+			var SERVER_URL = 'http://smartcomp.sai-it.com/api/';
+			function btnLogin_click() {
+
+				var username = document.getElementById('username').value;
+				var password = document.getElementById('password').value;
+				//login(username, password);
+				//window.location.replace('contact_list.html');
+
+				//check_user_login(login_result, username, password);
+				check_user_login(login_result, "hungho", "123456");
+
+			}
+
+			function login_result(results) {
+				//return 1;
+				if (results.rows.length > 0) {
+
+					// var l = results.rows.length;
+					// var text = '';
+					//alert(l);
+					//alert(print_r(results.rows));
+					//\alert(results.rows.length + childArr.username + ":" + childArr.password);
+					// for (var i = 0; i < l; i++) {
+					// var childArr = results.rows.item(i);
+					// text += childArr.username + ":" + childArr.password;
+					// }
+					//alert(text);
+					var childArr = results.rows.item(0);
+					//alert(childArr.id);
+					writeLocalStorage(USER_ID_SESSIION, childArr.id);
+					window.location.replace('contact_list.html');
+				} else {
+					alert('Your username or password are not match.');
+				}
+
+			}
+
+			/*function login(username, password) {
+
+			 var url = SERVER_URL + 'login';
+			 $.ajax({
+			 url : url,
+			 type : "POST",
+			 dataType : "json",
+			 data : {
+			 username : username,
+			 password : password
+			 },
+			 //contentType: "application/json",
+			 success : function(agentId) {
+			 if (agentId > 0) {
+
+			 //alert("You login successfully with agentId= " + agentId);
+			 window.location.replace('contact_list.html');
+			 } else {
+			 alert("Your username or password are not match.");
+			 }
+			 },
+			 error : function(err) {
+			 alert(err.message);
+			 }
+			 });
+			 }*/
+		</script>
+	</head>
+
+	<body>
+
+		<div id="loginPage" data-role="page">
+
+			<div data-role="header">
+				<h1>Excellent Company</h1>
+			</div>
+
+			<div data-role="content">
+
+				<div data-role="fieldcontain" class="ui-hide-label">
+					<label for="username">Username:</label>
+					<input type="text" name="username" id="username" value="" placeholder="Username" />
+				</div>
+
+				<div data-role="fieldcontain" class="ui-hide-label">
+					<label for="password">Password:</label>
+					<input type="password" name="password" id="password" value="" placeholder="Password" />
+				</div>
+
+				<input type="submit" value="Login" id="btnLogin" onclick="btnLogin_click();">
+
+			</div>
+
+			<div data-role="footer" data-position="fixed">
+				<h4>&copy; Sequent SAI-ASIA IT</h4>
+			</div>
+
+		</div>
+
+	</body>
+</html>
