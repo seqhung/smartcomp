@@ -3,7 +3,8 @@
  */
 
 function errorCB(err) {
-	console.log("Error processing SQL:" + err.message);
+	console.log("Error processing SQL:");
+	//alert(print_r(err));
 	//document.getElementById('contact-list-result').innerHTML = "<STRONG>Error processing SQL: " + err.message + "</STRONG>";
 	//alert(print_r(err));
 }
@@ -23,37 +24,34 @@ function queryCreateContact(tx) {
 	homePhone = document.getElementById('homephone').value;
 	mobiphone = document.getElementById('mobile').value;
 	is_cmp = document.getElementById('is_cmp').value;
-	//var synched = (isWifiConnection() == true) ? "1" : "0";
+	var synched = (isWifiConnection() == true) ? "0" : "1";
+	//alert(synched);
 
-	var cont = {
-		"fname" : fname,
-		"lname" : lname,
-		"email" : email,
-		"addr" : addr,
-		"is_cmp" : is_cmp,
-		"homephone" : homePhone,
-		"mobiphone" : mobiphone,
-		"owner_id" : owner_id
-	};
-
-	//alert(print_r(cont));
-
-	//alert(is_cmp);
-	//var sql = 'INSERT INTO Contact(owner_id,fname, lname, email, homePhone, mobiphone, addr,is_cmp,synched) VALUES ' + '(?,?,?,?,?,?,?,?)';
-	var sql = "INSERT INTO Contact(fname, lname, email, homePhone, mobiphone, addr,is_cmp,owner_id) VALUES (?,?,?,?,?,?,?,?)";
-	//tx.executeSql(sql, [owner_id, fname, lname, email, homePhone, mobiphone, addr, is_cmp, synched]);
-	tx.executeSql(sql, [fname, lname, email, homePhone, mobiphone, addr, is_cmp, owner_id], function() {
+	var sql = "INSERT INTO Contact(fname, lname, email, homePhone, mobiphone, addr,is_cmp,owner_id,synched) VALUES (?,?,?,?,?,?,?,?,?)";
+	//return true;
+	tx.executeSql(sql, ['' + fname, '' + lname, '' + email, '' + homePhone, '' + mobiphone, '' + addr, is_cmp, owner_id, synched], function() {
 		//alert("insert success 98wru8943");
 	}, function(err) {
-		alert(print_r(err));
+		//alert('insert locol error ' + print_r(err));
 	});
 
 }
 
 function createContact(callback_sync_add_contact) {
 
-	var lname = document.getElementById('last_name').value;
-	var email = document.getElementById('email').value;
+	var fname, lname, email, addr, homePhone, mobiphone, is_cmp, owner_id;
+	lname = document.getElementById('last_name').value;
+	email = document.getElementById('email').value;
+	fname = document.getElementById('first_name').value;
+	addr = document.getElementById('address').value;
+	homePhone = document.getElementById('homephone').value;
+	mobiphone = document.getElementById('mobile').value;
+	is_cmp = document.getElementById('is_cmp').value;
+	owner_id = readLocalStorage(USER_ID_SESSIION);
+
+	//alert(fname + lname + email + addr + homePhone + mobiphone + is_cmp + owner_id);
+	//alert('9875324957349857983495');
+
 	if (lname.length == 0) {
 		alert('Please input Last name');
 		return;
@@ -62,23 +60,21 @@ function createContact(callback_sync_add_contact) {
 		alert('Please input Email');
 		return;
 	}
+	if (mobiphone.length == 0) {
+		alert('Please input Mobile Phone');
+		return;
+	}
 	if (!db) {
 		db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
 	}
-	db.transaction(queryCreateContact, errorCB, function() {
+	db.transaction(queryCreateContact, function(err) {
+		alert('errro 1111' + print_r(err));
+	}, function() {//tx, results
 		console.log("Database has been created successfully");
 
+		//var client_id = results.insertId;
+		//alert(client_id);
 		if (isWifiConnection()) {
-			var fname, addr, homePhone, mobiphone, is_cmp, owner_id;
-			fname = document.getElementById('first_name').value;
-
-			addr = document.getElementById('address').value;
-			homePhone = document.getElementById('homephone').value;
-			mobiphone = document.getElementById('mobile').value;
-			is_cmp = document.getElementById('is_cmp').value;
-			owner_id = readLocalStorage(USER_ID_SESSIION);
-			//alert(USER_ID_SESSIION + owner_id);
-
 			var cont = {
 				"fname" : fname,
 				"lname" : lname,
@@ -88,12 +84,17 @@ function createContact(callback_sync_add_contact) {
 				"homephone" : homePhone,
 				"mobiphone" : mobiphone,
 				"owner_id" : owner_id
+				//"client_id" : client_id
 			};
+			//alert(print_r(cont));
+			//alert(USER_ID_SESSIION + owner_id);
+
 			callback_sync_add_contact(cont);
 		} else {
 			alert('Your account have created successful.');
 		}
-		clearContactGui();
+		window.location.replace('contact_list.html?f=cont_list12');
+		//clearContactGui();
 	});
 
 }
@@ -155,12 +156,12 @@ function updateContact(id, callback_sync) {
 }
 
 var db = 0;
-function createDB() {
-	if (!db) {
-		db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
-	}
-	db.transaction(initDB, errorCB, successCreateCB);
-}
+// function createDB() {
+// if (!db) {
+// db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
+// }
+// db.transaction(initDB, errorCB, successCreateCB);
+// }
 
 function contactDetail(id) {
 
@@ -170,10 +171,9 @@ function contactDetail(id) {
 
 function querySuccess(tx, results) {
 	//alert(print_r(results.rows));
-	console.log("Rows Effected = " + results.rowEffected);
+
 	console.log("No of Rows = " + results.rows.length);
-	//document.getElementById('contact-list-result').innerHTML = "<STRONG>YOUR QUERY HAVE EXECUSED SUCCESSFULLY</STRONG>";
-	//alert(print_r(results.rows.item(0)));
+
 	var i;
 	if (results.rows.length > 0) {
 		//alert(results.rows.length);
@@ -187,6 +187,7 @@ function querySuccess(tx, results) {
 			myHtml += '<li><a href="#" onclick="contactDetail(' + id + ');" data-transition="slide">';
 			//childArr.is_cmp + "-----" +
 			myHtml += childArr.fname + ' ' + childArr.lname + '<br/>' + childArr.mobiphone;
+			//+ '----' + childArr.owner_id + '------';
 			myHtml += '</a></li>';
 		}
 		myHtml += '</ul>';
@@ -205,15 +206,22 @@ function queryContactList(tx) {
 	var cont_type = 0;
 	if (is_cmp == "1") {
 		cont_type = 1;
-		tx.executeSql(sql, [cont_type], querySuccess, errorCB);
+		tx.executeSql(sql, [1], querySuccess, function(err) {
+			alert('error 33 ' + print_r(err));
+		});
 	} else {
 
 		var user_id = readLocalStorage(USER_ID_SESSIION);
-		alert(user_id);
+		//alert(user_id);
+		var id = Number(user_id);
+		//alert(id);
 		sql = 'SELECT * FROM Contact c where  c.owner_id =? and c.is_cmp = 0';
-		// and
+		// and  and c.is_cmp = 0
 
-		tx.executeSql(sql, [ user_id ], querySuccess, errorCB);
+		tx.executeSql(sql, [id], querySuccess, function(err) {
+			alert('error 34 ' + print_r(err));
+		});
+		//tx.executeSql(sql, [id]);
 	}
 
 	//alert(is_cmp);
@@ -234,8 +242,15 @@ function queryContactList(tx) {
 }
 
 function getContactList() {
-	db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
-	db.transaction(queryContactList, querySuccess, errorCB);
+	if (!db) {
+		db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
+	}
+
+	//db.transaction(queryContactList, querySuccess, function(err) {
+	db.transaction(queryContactList, function() {
+	}, function(err) {
+		//alert('err 201' + print_r(err));
+	});
 
 }
 

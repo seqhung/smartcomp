@@ -164,10 +164,12 @@ function sync_add_contact(cont) {
 	options.success = function(newId) {
 		console.log('Sync Create new contact successfully. ID: ' + newId);
 		//alert('Sync Create new contact successfully. ID: ' + newId);
-		alert('Your account have created successful.');
+		alert('Your contact have created successful.');
 	};
 	options.error = function(err) {
-		alert(print_r(err));
+		//alert(print_r(err));
+		//alert('742543');
+		console.log('Sync Create new contact error. ID: ' + print_r(err));
 	};
 	$.ajax(options);
 
@@ -195,17 +197,18 @@ function sync_add_quotation(quot) {
 		//alert('Sync Create new quotation successfully. ID: ' + newdfadfasdfadsfId);
 	};
 	options.error = function(err) {
-		alert(print_r(err));
+		//alert(print_r(err));
+		console.log('Sync Create new quotation error. ID: ' + print_r(err));
 	};
 	$.ajax(options);
 }
 
 function sync_update_quotation(quot) {
 	var sex = 0;
-	if (quot.sex == 'Male' || quot.sex == 'male') {
+	if (quot.sex == "male" || quot.sex == "Male") {
 		sex = 1;
 	}
-
+	alert(print_r(quot));
 	var options = {};
 	options.url = QUOTATION_URL + 'edit?id=' + quot.id;
 	options.type = "PUT";
@@ -214,7 +217,8 @@ function sync_update_quotation(quot) {
 		IdentityNumber : quot.id_num,
 		Age : quot.Age,
 		sex : sex,
-		Amount : quot.Insure_Amount
+		Amount : quot.Insure_Amount,
+		AgentId : quot.owner_id
 	};
 	options.dataType = "json";
 	options.success = function() {
@@ -249,7 +253,7 @@ function sync_update_contact(cont) {
 	};
 	options.dataType = "json";
 	options.success = function() {
-		alert('Sync Update contact successfully.');
+		//alert('Sync Update contact successfully.');
 	};
 	options.error = function(err) {
 		alert(print_r(err));

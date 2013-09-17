@@ -30,6 +30,8 @@
 				var id = getURLParameter('id');
 				if (id != null && id.length > 0) {
 					bindQuotaion(id);
+				} else {
+					document.getElementById('last_name').style.visibility = 'hidden'
 				}
 				//alert(id);
 			}
@@ -43,13 +45,34 @@
 				}
 			}
 
+			function showPDF() {
+				window.open('http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf', '_blank', 'location=no');
+				return false;
+				var id = getURLParameter('id');
+				alert(id);
+				// var url = 'http://smartcomp.sai-it.com/api/quotations/printpdf?id=' + id;
+				// window.location.replace(url);
+				var fileTransfer = new FileTransfer();
+
+				//var url = "http://www.irs.gov/pub/irs-pdf/fw4.pdf";
+				var url = 'http://smartcomp.sai-it.com/api/quotations/printpdf?id=2';
+				var filePath = window.appRootDir.fullPath + "/test.pdf";
+
+				fileTransfer.download(url, filePath, function(entry) {
+					alert("download complete: " + entry.fullPath);
+				}, function(error) {
+					alert("download error" + error.source);
+				});
+			}
 		</script>
 	</head>
 
 	<body onload="onDeviceReady();">
 		<div data-role="page" id="foo" data-position="fixed">
 			<div data-role="header" data-theme="a">
-
+				<div id='div_pdf' style="float: right; margin-right: 10px; margin-top: 5px;" >
+					<a href="#" onclick="showPDF();"><img src="img/pdf_icon.jpg" width="25px;" height="30px;" />&nbsp;</a>
+				</div>
 			</div>
 			<!-- /header -->
 
@@ -58,7 +81,7 @@
 				<span id="quotation-result"></span>
 				<div data-role="fieldcontain" class="ui-hide-label">
 					<label for="Buyer" >Buyer</label>
-					<input  type="text" id="Buyer" maxlength="30" size="30" class="control" placeholder="Buyer">
+					<input  type="text" id="Buyer" maxlength="30" size="30" class="control" placeholder="Customer Name">
 				</div>
 				<div data-role="fieldcontain" class="ui-hide-label">
 					<label for="id_num">ID Number</label>
@@ -71,7 +94,11 @@
 
 				<div data-role="fieldcontain" class="ui-hide-label">
 					<label for="Sex">Sex</label>
-					<input  type="text" id="Sex" maxlength="30" size="30" placeholder="Sex">
+					<!-- <input  type="text" id="Sex" maxlength="30" size="30" placeholder="Sex"> -->
+					<select id='Sex' align="left">
+						<option value="Male" selected="selected">Male</option>
+						<option value="Female">Female</option>
+					</select>
 				</div>
 
 				<div data-role="fieldcontain" class="ui-hide-label">

@@ -76,35 +76,36 @@ function populateDB2(tx) {
 	tx.executeSql('CREATE TABLE IF NOT EXISTS Quotaion(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,Buyer,id_num,Agency,owner_id,Age,Sex,Insure_Amount,synched,synch_updated)');
 	tx.executeSql('CREATE TABLE IF NOT EXISTS Contact(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,fname, lname, email, homePhone, mobiphone, addr,is_cmp,owner_id,synched,synch_updated)');
 	tx.executeSql('CREATE TABLE IF NOT EXISTS User(id NOT NULL PRIMARY KEY,username, password)');
-	/*//tx.executeSql('Delete from User');
-	tx.executeSql('DROP TABLE IF EXISTS Quotaion');
-	tx.executeSql('DROP TABLE IF EXISTS Contact');
-	tx.executeSql('DROP TABLE IF EXISTS User');
-	//
 	// tx.executeSql('Delete from User');
 	// tx.executeSql('Delete from Contact');
 	// tx.executeSql('Delete from Quotaion');
-	//
-	isTableExists(tx, "Quotaion", function(status) {
-		if (!status) {
-			//alert("table not exist, creating one");
-			//tx.executeSql('DROP TABLE IF EXISTS Quotaion');
-			tx.executeSql('CREATE TABLE IF NOT EXISTS Quotaion(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,Buyer,id_num,Agency,owner_id,Age,Sex,Insure_Amount,synched,synch_updated)');
-			//tx.executeSql('INSERT INTO Quotaion(Buyer,id_num,Agency,Age,Sex,Insure_Amount,synched,synch_updated) VALUES ("Hung Ho","4654657987","100003","28", "Male","3988899","0","0")');
-			//tx.executeSql('INSERT INTO Quotaion(Buyer,id_num,Agency,Age,Sex,Insure_Amount,synched,synch_updated) VALUES ("Jin Ho","32668580004","35400003","29", "Male","908888899","0","0")');
-			//tx.executeSql('DROP TABLE IF EXISTS Contact');
-			tx.executeSql('CREATE TABLE IF NOT EXISTS Contact(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,fname, lname, email, homePhone, mobiphone, addr,is_cmp,owner_id,synched,synch_updated)');
-			//tx.executeSql('INSERT INTO Contact(fname, lname, email, homePhone, mobiphone, addr,is_cmp,synched,synch_updated) VALUES ("Hung", "Ho","hung.ho@sai-it.com","063500132","0132444321","364 Cong Hoa","1","0","0")');
-			//tx.executeSql('INSERT INTO Contact(fname, lname, email, homePhone, mobiphone, addr,is_cmp,synched,synch_updated) VALUES ("Phu", "Hoang","phu.hoang@sai-it.com","01256822","098568745","Tang Nhon Phu A","0","0","0")');
-			tx.executeSql('CREATE TABLE IF NOT EXISTS User(id NOT NULL PRIMARY KEY,username, password)');
+	/*//tx.executeSql('Delete from User');
+	 tx.executeSql('DROP TABLE IF EXISTS Quotaion');
+	 tx.executeSql('DROP TABLE IF EXISTS Contact');
+	 tx.executeSql('DROP TABLE IF EXISTS User');
+	 //
 
-		} else {
-			console.log("Database Existed");
-			// alert("table exist, dropping for test");
-			// tx.executeSql('DROP TABLE DEMO');
-		}
-	});
-	*/
+	 //
+	 isTableExists(tx, "Quotaion", function(status) {
+	 if (!status) {
+	 //alert("table not exist, creating one");
+	 //tx.executeSql('DROP TABLE IF EXISTS Quotaion');
+	 tx.executeSql('CREATE TABLE IF NOT EXISTS Quotaion(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,Buyer,id_num,Agency,owner_id,Age,Sex,Insure_Amount,synched,synch_updated)');
+	 //tx.executeSql('INSERT INTO Quotaion(Buyer,id_num,Agency,Age,Sex,Insure_Amount,synched,synch_updated) VALUES ("Hung Ho","4654657987","100003","28", "Male","3988899","0","0")');
+	 //tx.executeSql('INSERT INTO Quotaion(Buyer,id_num,Agency,Age,Sex,Insure_Amount,synched,synch_updated) VALUES ("Jin Ho","32668580004","35400003","29", "Male","908888899","0","0")');
+	 //tx.executeSql('DROP TABLE IF EXISTS Contact');
+	 tx.executeSql('CREATE TABLE IF NOT EXISTS Contact(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,fname, lname, email, homePhone, mobiphone, addr,is_cmp,owner_id,synched,synch_updated)');
+	 //tx.executeSql('INSERT INTO Contact(fname, lname, email, homePhone, mobiphone, addr,is_cmp,synched,synch_updated) VALUES ("Hung", "Ho","hung.ho@sai-it.com","063500132","0132444321","364 Cong Hoa","1","0","0")');
+	 //tx.executeSql('INSERT INTO Contact(fname, lname, email, homePhone, mobiphone, addr,is_cmp,synched,synch_updated) VALUES ("Phu", "Hoang","phu.hoang@sai-it.com","01256822","098568745","Tang Nhon Phu A","0","0","0")');
+	 tx.executeSql('CREATE TABLE IF NOT EXISTS User(id NOT NULL PRIMARY KEY,username, password)');
+
+	 } else {
+	 console.log("Database Existed");
+	 // alert("table exist, dropping for test");
+	 // tx.executeSql('DROP TABLE DEMO');
+	 }
+	 });
+	 */
 }
 
 function isTableExists(tx, tableName, callback) {

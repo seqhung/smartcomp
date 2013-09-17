@@ -39,8 +39,8 @@
 				createDatabase();
 				if (isWifiConnection()) {
 					sync_user(parse_user_list);
-					//sync_db_quotation(parse_quotation_list);
-					//sysn_contact(parse_contact_list);
+					sync_db_quotation(parse_quotation_list);
+					sysn_contact(parse_contact_list);
 				
 				} else {
 					alert("Network not available");

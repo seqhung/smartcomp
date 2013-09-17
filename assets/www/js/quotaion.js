@@ -13,7 +13,7 @@ function successCreateCB() {
 
 function updateQuotaion(id, callback_sync_update_quotation) {
 
-	var Buyer, Agency, Age, Sex, Insure_Amount, id_num;
+	var Buyer, Agency, Age, Sex, Insure_Amount, id_num, owner_id;
 	Buyer = document.getElementById('Buyer').value;
 	if (Buyer.length == 0) {
 		alert('Please input Buyer');
@@ -24,7 +24,7 @@ function updateQuotaion(id, callback_sync_update_quotation) {
 	Age = document.getElementById('Age').value;
 	Sex = document.getElementById('Sex').value;
 	Insure_Amount = document.getElementById('Insure_Amount').value;
-
+	owner_id = readLocalStorage(USER_ID_SESSIION);
 	var sql = 'Update Quotaion set Buyer = ?, id_num = ?, Age = ?, Sex= ?, Insure_Amount= ?';
 	sql += ' Where id = ?';
 
@@ -41,14 +41,16 @@ function updateQuotaion(id, callback_sync_update_quotation) {
 		console.log("quotation have updated successful");
 
 		var quot = {
-			"id":id,
+			"id" : id,
 			"id_num" : id_num,
 			"Age" : Age,
 			"Sex" : Sex,
-			"Insure_Amount" : Insure_Amount,		
-			"Buyer" : Buyer
+			"Insure_Amount" : Insure_Amount,
+			"Buyer" : Buyer,
+			"owner_id" : owner_id
 		};
 		if (isWifiConnection()) {
+			alert('callback_sync_update_quotation');
 			callback_sync_update_quotation(quot);
 		}
 
@@ -122,6 +124,7 @@ function createQuotaion(callback_sync_add_quotation) {
 		}
 
 		alert('Your quotation have created successful.');
+		navQuotaionList();
 	});
 }
 
@@ -147,7 +150,7 @@ function queryQuotaionSuccess(tx, results) {
 			// myHtml += '<span style="float: left;">'+childArr.Buyer +'</span>';
 			// myHtml += '<span style="float: right;">'+childArr.Agency +'</span>';
 
-			myHtml += childArr.Buyer + '<br/>' + childArr.Insure_Amount;
+			myHtml += childArr.Buyer + '<br/>' + childArr.Insure_Amount ;//+ '----' +childArr.owner_id + '------';
 
 			myHtml += '</a></li>';
 		}
@@ -164,7 +167,10 @@ function getQuotaionList() {
 		db = window.openDatabase("Database", "1.0", "PhoneGap Training", 200000);
 	}
 	db.transaction(function(tx) {
-		tx.executeSql('SELECT * FROM Quotaion', [], queryQuotaionSuccess, errorCB);
+		var user_id = readLocalStorage(USER_ID_SESSIION);
+		var id = Number(user_id);
+		tx.executeSql('SELECT * FROM Quotaion c where c.owner_id=?', [id], queryQuotaionSuccess, errorCB);
+		//tx.executeSql('SELECT * FROM Quotaion', [], queryQuotaionSuccess, errorCB);
 	}, errorCB);
 }
 

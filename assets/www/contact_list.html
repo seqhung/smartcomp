@@ -30,8 +30,15 @@
 
 				//createDB();
 				if (isWifiConnection()) {
-					//sync_data(parse_contact_list, parse_quotation_list);
-					sysn_contact(parse_contact_list);
+					var f = getURLParameter('f');
+					if (f != null && f.length > 0) {
+						//alert(f);
+						sysn_contact(parse_contact_list);
+						//getContactList();
+					} else {
+						//alert('hsy');
+						sysn_contact(parse_contact_list);
+					}
 				}
 				getContactList();
 
@@ -40,7 +47,7 @@
 		</script>
 	</head>
 
-	<body onload="onDeviceReady();">
+	<body onload="onDeviceReady();" >
 		<div data-role="page" id="foo" data-position="fixed">
 			<header>
 				<h1 style="float: left">Contact List</h1>
